@@ -5,11 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import it.polito.tdp.meteo.model.Rilevamento;
 
@@ -59,7 +56,8 @@ public class MeteoDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}//basandomi su questo metodo ne posso creare un altro che ritorna una mappa con chiave la città e come valore l'umidità media della città
+	}//basandomi su questo metodo ne posso creare un altro 
+	//che ritorna una mappa con chiave la città e come valore l'umidità media della città
 
 	public List<String> getAllLocalita() {
 		final String sql = "SELECT DISTINCT Localita FROM situazione";
@@ -75,6 +73,29 @@ public class MeteoDAO {
 			}
 			conn.close();
 			return localita;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public Rilevamento getRilevamentoCittaGiornoMese(String localita, int giorno, int mese) {
+		final String sql = "SELECT Localita, Data, Umidita FROM situazione WHERE Localita=? AND DAY(Data)=? AND MONTH(Data)=? ";
+		Rilevamento rilevamento=null;
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, localita);
+			st.setInt(2, giorno);
+			st.setInt(3,  mese);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next())
+				rilevamento = new Rilevamento(rs.getString("Localita"), rs.getDate("Data"), rs.getInt("Umidita"));
+			rs.close();
+			conn.close();
+			return rilevamento;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

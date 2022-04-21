@@ -5,9 +5,12 @@
 package it.polito.tdp.meteo;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.meteo.model.Citta;
 import it.polito.tdp.meteo.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,20 +46,43 @@ public class FXMLController {
 
     @FXML
     void doCalcolaSequenza(ActionEvent event) {
-
+    	int mese;
+    	try{
+    		mese=boxMese.getValue();
+    	} catch (Exception e) {
+    		txtResult.clear();
+    		txtResult.setText("Per favore, inserire il mese\n");
+    		return;
+      	}
+    	List<Citta> soluzione= new ArrayList<Citta>(model.trovaSequenza(mese));    	
+    	if(soluzione.size()==0) {
+    		txtResult.setText("Abbiamo un problema");
+    		return;
+    	}
+    	txtResult.setText("La soluzione migliore è: \n");
+    	for(Citta c : soluzione)
+    		txtResult.appendText(c.getNome()+"\n");
     }
+    
 
     @FXML
     void doCalcolaUmidita(ActionEvent event) {
-    	int mese=boxMese.getValue();
+    	int mese;
+    	try{
+    		mese=boxMese.getValue();
+    	} catch (Exception e) {
+    		txtResult.clear();
+    		txtResult.setText("Per favore, inserire il mese\n");
+    		return;
+      	}
     	HashMap<String,String> umiditaMedia=new HashMap<String,String>(model.getUmiditaMedia(mese));
     	txtResult.clear();
-    	lblComunicazioni.setText("");
     	txtResult.setText("Le umidità medie per il "+mese+"° mese sono le seguenti:\n");
     	for(String s:umiditaMedia.keySet()) {
     		txtResult.appendText(s+" "+umiditaMedia.get(s)+"\n");
     	}
     }
+    
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {

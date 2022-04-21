@@ -1,7 +1,7 @@
 package it.polito.tdp.meteo;
 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
+//import static javafx.application.Application.launch;
 
 import it.polito.tdp.meteo.model.Model;
 import javafx.fxml.FXMLLoader;
