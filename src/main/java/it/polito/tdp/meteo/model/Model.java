@@ -135,6 +135,11 @@ public class Model {
 	
 	
 	
+	
+	
+	
+	
+	//QUESTO METODO NON FUNZIONA, HA DEL POTENZIALE MA NON SI APPLICA
 	public void cerca2(int livello, List<Citta> soluzione, List<Citta> parziale, int mese, int costo, int costoMin) {
 	
 		if(livello>=15) {  //condizione uscita
